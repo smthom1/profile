@@ -171,7 +171,18 @@
     iframe{border:1px solid #888}
 
     /* responsive tweak */
-    @media (max-width:700px){.win{width:90vw;height:60vh;}}
+    @media (max-width: 700px) {
+      .win {
+        width: 90vw;    /* you already have this */
+        height: 60vh;   /* you already have this */
+        
+        /* ADD THESE LINES */
+        left: 10px !important;
+        top: 40px !important; 
+        right: auto !important; /* Good practice to reset these */
+        bottom: auto !important;/* Good practice to reset these */
+      }
+    }
 
     /* ADDED MINESWEEPER STYLES */
     .mine-ui-bar {
@@ -1347,4 +1358,5 @@
   </script>
 </body>
 </html>
+
 
