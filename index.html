@@ -94,7 +94,7 @@
     }
 
     /* windows */
-    .win{position:absolute;width:520px;background:var(--win-bg);border:2px solid #000;box-shadow:6px 6px 0 #404040;border-radius:3px;resize:both;overflow:auto}
+    .win{position:absolute;width:520px;background:var(--win-bg);border:2px solid #000;box-shadow:6px 6px 0 #404040;border-radius:3px;resize:both;overflow:auto; touch-action: none;}
     .title{display:flex;align-items:center;justify-content:space-between;padding:6px 8px;color:#fff;font-weight:700;cursor:move;background:linear-gradient(90deg,var(--title-left),var(--title-right));border-top-left-radius:2px;border-top-right-radius:2px}
     .title .left{display:flex;gap:8px;align-items:center}
     .title .ctrls{display:flex;gap:6px}
@@ -789,23 +789,80 @@
       removeTask(name);
     }
 
-    // draggable title bars
-    function makeDraggable(winEl){
+    function makeDraggable(winEl) {
       const title = winEl.querySelector('.title');
-      title.addEventListener('mousedown',function(e){
+      
+      // This function will handle all movement logic
+      function onMove(ev) {
+        // 'normalized' X and Y coordinates for both touch and mouse
+        let clientX, clientY;
+        
+        if (ev.type === 'touchmove') {
+          // Use the first touch point
+          clientX = ev.touches[0].clientX;
+          clientY = ev.touches[0].clientY;
+        } else {
+          // Use the mouse position
+          clientX = ev.clientX;
+          clientY = ev.clientY;
+        }
+        
+        // Get the pre-calculated offset
+        const offsetX = parseFloat(winEl.dataset.dragOffsetX || 0);
+        const offsetY = parseFloat(winEl.dataset.dragOffsetY || 0);
+        
+        winEl.style.left = (clientX - offsetX) + 'px';
+        winEl.style.top = (clientY - offsetY) + 'px';
+      }
+    
+      // This function will stop the drag
+      function onDragEnd() {
+        // Remove listeners from the whole document
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onDragEnd);
+        document.removeEventListener('touchmove', onMove);
+        document.removeEventListener('touchend', onDragEnd);
+        
+        // Clear the stored offsets
+        delete winEl.dataset.dragOffsetX;
+        delete winEl.dataset.dragOffsetY;
+      }
+    
+      // This function will start the drag
+      function onDragStart(ev) {
         winEl.style.zIndex = Date.now();
+        
+        let clientX, clientY;
+        
+        if (ev.type === 'touchstart') {
+          // Use the first touch point
+          clientX = ev.touches[0].clientX;
+          clientY = ev.touches[0].clientY;
+          
+          // Add touch listeners
+          document.addEventListener('touchmove', onMove);
+          document.addEventListener('touchend', onDragEnd);
+        } else {
+          // Use the mouse position
+          clientX = ev.clientX;
+          
+          // Add mouse listeners
+          document.addEventListener('mousemove', onMove);
+          document.addEventListener('mouseup', onDragEnd);
+        }
+    
         const rect = winEl.getBoundingClientRect();
-        const offsetX = e.clientX - rect.left;
-        const offsetY = e.clientY - rect.top;
-        function onMove(ev){winEl.style.left=(ev.clientX-offsetX)+'px';winEl.style.top=(ev.clientY-offsetY)+'px';}
-        function done(){document.removeEventListener('mousemove',onMove);document.removeEventListener('mouseup',done)}
-        document.addEventListener('mousemove',onMove);document.addEventListener('mouseup',done);
-      });
+        
+        // Store the offset *relative to the window*
+        // We store this in `dataset` so onMove() can access it
+        winEl.dataset.dragOffsetX = clientX - rect.left;
+        winEl.dataset.dragOffsetY = clientY - rect.top;
+      }
+    
+      // Add the START listeners to the title bar
+      title.addEventListener('mousedown', onDragStart);
+      title.addEventListener('touchstart', onDragStart);
     }
-    document.querySelectorAll('.win').forEach(winEl => {
-      makeDraggable(winEl);
-      makeFocusable(winEl);
-    });
 
     // --- Start menu toggle ---
     const startBtn = document.getElementById('startBtn');
@@ -1358,5 +1415,6 @@
   </script>
 </body>
 </html>
+
 
 
