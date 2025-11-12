@@ -171,7 +171,7 @@
     iframe{border:1px solid #888}
 
     /* responsive tweak */
-    @media (max-width:700px){.win{width:90vw;height:60vh;}}
+    @media (max-width:700px){.win{width:90vw;height:60vh;resize: none;}}
 
     /* ADDED MINESWEEPER STYLES */
     .mine-ui-bar {
@@ -822,8 +822,29 @@
           moveY = e.clientY;
         }
 
-        winEl.style.left = (moveX - offsetX) + 'px';
-        winEl.style.top = (moveY - offsetY) + 'px';
+        // Calculate proposed new position
+        let newLeft = moveX - offsetX;
+        let newTop = moveY - offsetY;
+
+        // --- Boundary checks ---
+        // Only apply boundary checks on "mobile" (screens <= 700px wide)
+        if (window.innerWidth <= 700) {
+          const taskbarHeight = 42; // Height of your taskbar
+          const minLeft = 0;
+          const minTop = 0;
+          
+          // Max left is screen width minus window width
+          const maxLeft = window.innerWidth - winEl.offsetWidth; 
+          // Max top is screen height minus window height, and also minus taskbar height
+          const maxTop = window.innerHeight - winEl.offsetHeight - taskbarHeight;
+
+          // Clamp the values to stay within the boundaries
+          newLeft = Math.max(minLeft, Math.min(newLeft, maxLeft));
+          newTop = Math.max(minTop, Math.min(newTop, maxTop));
+        }
+        
+        winEl.style.left = newLeft + 'px';
+        winEl.style.top = newTop + 'px';
       }
 
       // This function stops the drag
@@ -1398,3 +1419,4 @@
 </body>
 
 </html>
+
