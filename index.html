@@ -791,6 +791,10 @@
 
       // This function starts the drag, for either mouse or touch
       function onDragStart(e) {
+        if (e.target.tagName === 'BUTTON') {
+          return;
+        }
+        
         winEl.style.zIndex = Date.now();
         const rect = winEl.getBoundingClientRect();
 
@@ -1425,5 +1429,6 @@
 </body>
 
 </html>
+
 
 
