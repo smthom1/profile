@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'ari-w9500';
-  src: url('/fonts/ari-w9500.ttf') format('truetype');
+  src: url('/profile/fonts/ari-w9500.ttf') format('truetype');
 }
 @font-face {
   font-family: 'FSEX300';
-  src: url('/fonts/FSEX300.ttf') format('truetype');
+  src: url('/profile/fonts/FSEX300.ttf') format('truetype');
 }
 
 :root {
@@ -42,7 +42,7 @@ html, body {
 }
 
 body.theme-win98 {
-  background-image: url('/images/windows-98img.webp');
+  background-image: url('/profile/images/windows-98img.webp');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -57,7 +57,7 @@ body.theme-win98 {
 }
 
 body.theme-win11 {
-  background: #0d47a1 url('/images/windows11_background.png?v=3') center/cover no-repeat;
+  background: #0d47a1 url('/profile/images/windows11_background.png?v=3') center/cover no-repeat;
   font-family: "Segoe UI Variable", "Segoe UI", -apple-system, BlinkMacSystemFont, "Roboto", sans-serif;
   color: var(--w11-text);
   -webkit-font-smoothing: antialiased;

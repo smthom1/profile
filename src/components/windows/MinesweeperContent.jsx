@@ -186,9 +186,9 @@ export default function MinesweeperContent() {
           className="win98-button"
           style={{ width: 30, height: 30, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0 }}
         >
-          {gameState === 'playing' && <img src="/images/mine_rest.png" alt="smile" style={{ width: 22, height: 22 }} />}
-          {gameState === 'lost' && <img src="/images/mine_lost.png" alt="dead" style={{ width: 22, height: 22 }} />}
-          {gameState === 'won' && <img src="/images/mine_win.png" alt="cool" style={{ width: 22, height: 22 }} />}
+          {gameState === 'playing' && <img src="images/mine_rest.png" alt="smile" style={{ width: 22, height: 22 }} />}
+          {gameState === 'lost' && <img src="images/mine_lost.png" alt="dead" style={{ width: 22, height: 22 }} />}
+          {gameState === 'won' && <img src="images/mine_win.png" alt="cool" style={{ width: 22, height: 22 }} />}
         </div>
 
         <div style={{ fontFamily: '"Roboto Mono", monospace', fontWeight: 700, fontSize: 20, background: '#333', color: '#ff4136', padding: '2px 6px', border: '1px solid var(--bevel-dark)', minWidth: 36, textAlign: 'center' }}>
@@ -224,8 +224,8 @@ export default function MinesweeperContent() {
             }}
           >
             {cell.isRevealed && !cell.isMine && cell.neighborCount > 0 && cell.neighborCount}
-            {cell.isRevealed && cell.isMine && <img src="/images/mine.png" alt="mine" style={{ width: 14, height: 14 }} />}
-            {!cell.isRevealed && cell.isFlagged && <img src="/images/mine_flag.png" alt="flag" style={{ width: 14, height: 14 }} />}
+            {cell.isRevealed && cell.isMine && <img src="images/mine.png" alt="mine" style={{ width: 14, height: 14 }} />}
+            {!cell.isRevealed && cell.isFlagged && <img src="images/mine_flag.png" alt="flag" style={{ width: 14, height: 14 }} />}
             {!cell.isRevealed && gameState === 'lost' && cell.isFlagged && !cell.isMine && '❌'}
           </div>
         ))}
