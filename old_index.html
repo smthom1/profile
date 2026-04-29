@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>S. Thompson — Win98 Deluxe</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'ari-w9500';
+      src: url('fonts/ari-w9500.ttf') format('truetype');
+    }
+    @font-face {
+      font-family: 'FSEX300';
+      src: url('fonts/FSEX300.ttf') format('truetype');
+    }
+    :root{
+      --bg1: #007878;
+      --bg2: #009999;
+      --win-bg: #C0C0C0;
+      --panel: #E0E0E0;
+      --bevel-light: #FFF;
+      --bevel-dark: #808080;
+      --title-left: #000080;
+      --title-right: #3366ff;
+      --text: #000;
+      --accent: #2b62d6;
+      --glass: rgba(255,255,255,0.06);
+    }
+    /* new skills format */
+    .skills-container {
+      display: flex;
+      gap: 20px;
+      justify-content: space-between;
+    }
+    .skills-group h4 {
+      margin: 0 0 8px 0;
+      padding-bottom: 4px;
+      border-bottom: 1px solid var(--bevel-dark);
+      color: var(--title-left); /* Use the title bar color for headings */
+    }
+    .skills-group ul {
+      margin: 0;
+      padding-left: 20px; /* Standard bullet indentation */
+      list-style-type: disc;
+    }
+    .skills-group li {
+      margin-bottom: 6px;
+    }
+
+    /* page */
+    html,body{height:100%;}
+    body{
+          margin:0;
+          height:100%;
+          /* Replaced the gradient with your background image */
+          background-image: url('images/windows-98img.webp');
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          
+          font-family: "ari-w9500", Tahoma, Roboto Mono, monospace;
+          -webkit-font-smoothing:antialiased;
+          user-select:none;
+          overflow:hidden;
+        }
+
+    /* subtle noise texture (authentic feel) */
+    body::before{
+      content:'';position:fixed;inset:0;pointer-events:none;opacity:0.06;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><filter id="n"><feTurbulence baseFrequency="0.8" numOctaves="1" seed="2"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(%23n)"/></svg>');
+      mix-blend-mode:overlay;
+    }
+
+    /* desktop icons */
+    .desktop{position:absolute;inset:0;padding:28px 20px 52px 20px;display:flex;flex-direction:row;flex-wrap:nowrap;align-content:flex-start;gap:28px}
+    .icon{width:92px;text-align:center;color:white;text-shadow:1px 1px 2px #000;cursor:pointer}
+    .icon .emoji{font-size:44px}
+    .icon span{display:block;margin-top:6px;font-size:13px}
+    .icon-column{display:flex;flex-direction:column;gap:28px}
+
+    .icon:hover{transform:translateY(-4px);transition:transform .12s ease}
+
+    .icon img {
+      width: 44px;
+      height: 44px;
+      object-fit: contain; /* Prevents stretching */
+    }
+    .start .logo img {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+      vertical-align: middle; /* Helps with alignment */
+    }
+
+    /* windows */
+    .win{position:absolute;width:520px;background:var(--win-bg);border:2px solid #000;box-shadow:6px 6px 0 #404040;border-radius:3px;resize:both;overflow:auto}
+    .title{display:flex;align-items:center;justify-content:space-between;padding:6px 8px;color:#fff;font-weight:700;cursor:move;background:linear-gradient(90deg,var(--title-left),var(--title-right));border-top-left-radius:2px;border-top-right-radius:2px}
+    .title .left{display:flex;gap:8px;align-items:center}
+    .title .ctrls{display:flex;gap:6px}
+    .title button{
+      width:18px;
+      height:18px;
+      background:var(--panel);
+      border:1px solid var(--bevel-dark);
+      cursor:pointer;
+      
+      /* Add these lines */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      line-height: 1; /* Prevents extra spacing */
+    }
+    .content{padding:12px;background:var(--panel);color:var(--text)}
+
+    /* project explorer */
+    .explorer{display:flex;gap:12px}
+    .folders{width:160px;border-right:2px solid var(--bevel-dark);padding-right:12px}
+    .folder{padding:8px;border:2px solid transparent;border-radius:3px;cursor:pointer}
+    .folder:hover{background:var(--glass)}
+    .preview{flex:1;padding-left:12px}
+    .proj-card{background:#dcdcdc;border:2px inset var(--bevel-dark);padding:10px;margin-bottom:10px}
+
+    /* taskbar */
+    .taskbar{position:fixed;left:0;right:0;bottom:0;height:42px;background:linear-gradient(180deg,#c0c0c0,#9ea0a0);border-top:2px solid var(--bevel-dark);display:flex;align-items:center;padding:6px 8px;box-shadow:inset 0 1px 1px #fff}
+    .start{display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--panel);border:2px outset var(--bevel-light);cursor:pointer;border-radius:3px;font-weight:700;}
+    .start:active{border-style:inset}
+    .task-items{display:flex;gap:6px;margin-left:12px}
+    .tb-clock{margin-left:auto;margin-right:6px;background:#d0d0d0;border:2px inset var(--bevel-dark);padding:4px 8px;font-weight:700}
+
+    /* start menu */
+    .start-menu{position:fixed;left:8px;bottom:50px;width:260px;background:var(--win-bg);border:2px solid #000;box-shadow:6px 6px 0 #404040;padding:8px;display:none}
+    .start-menu h4{margin:0 0 6px 0;color:#000}
+    .start-menu .group{border-top:1px solid var(--bevel-dark);padding-top:6px;margin-top:6px}
+    
+    /* REPLACE your old .start-item rule with this */
+    .start-item{
+      padding: 6px;
+      border-radius: 3px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px; /* space between icon and text */
+    }
+
+    /* ADD this new rule for the icon sizing */
+    .start-item img, .start-item .emoji-icon {
+      width: 20px;
+      height: 20px;
+      object-fit: contain; /* for images */
+      font-size: 18px;     /* for emojis */
+      text-align: center;  /* for emojis */
+      line-height: 20px;   /* for emojis */
+    }
+
+    .start-item:hover{background:var(--glass)}
+    .start-item:hover{background:var(--glass)}
+
+    /* boot & shutdown screens */
+    .overlay{position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;z-index:9999}
+    .boot-logo{background:linear-gradient(180deg,#0c47a1,#3566d6);padding:18px 28px;border-radius:4px;box-shadow:0 8px 30px rgba(0,0,0,0.6)}
+
+    /* notepad simple */
+    .notepad-text{width:100%;height:320px;background:#fff;border:2px inset #808080;padding:8px;font-family:'FSEX300', 'ari-w9500', monospace;font-size: 16px;}
+
+    /* misc */
+    .small{font-size:13px}
+    .muted{color:#333}
+    /* ensure iframes resize nicely */
+    iframe{border:1px solid #888}
+
+    /* responsive tweak */
+    @media (max-width:700px){.win{width:90vw;height:60vh;}}
+
+    /* ADDED MINESWEEPER STYLES */
+    .mine-ui-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--panel);
+      border: 2px inset var(--bevel-dark);
+      padding: 6px;
+      margin-bottom: 8px;
+    }
+    .mine-counter {
+      font-family: 'Roboto Mono', monospace; /* A digital-style font */
+      font-weight: 700;
+      font-size: 20px;
+      background: #333;
+      color: #ff4136;
+      padding: 2px 6px;
+      border-radius: 2px;
+      border: 1px solid var(--bevel-dark);
+      min-width: 36px;
+      text-align: center;
+    }
+    .mine-reset {
+      /* MODIFIED: Replaced text emoji with background images */
+      cursor: pointer;
+      border: 2px outset var(--bevel-light);
+      background-color: var(--panel);
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+      
+      background-image: url('images/mine_rest.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    /* MODIFIED: Added states for win/loss faces */
+    .mine-reset.lost {
+      background-image: url('images/mine_lost.png');
+    }
+    .mine-reset.gamewon {
+      background-image: url('images/mine_win.png');
+    }
+    .mine-reset:active {
+      border-style: inset;
+    }
+    .mine-grid {
+      display: grid;
+      /* CSS variables set by JS */
+      grid-template-columns: repeat(var(--mine-cols, 9), 22px);
+      grid-template-rows: repeat(var(--mine-rows, 9), 22px);
+      border: 3px inset var(--bevel-dark);
+    }
+    .mine-cell {
+      width: 22px;
+      height: 22px;
+      border: 2px outset var(--bevel-light);
+      background-color: var(--win-bg);
+      cursor: pointer;
+      font-family: "ari-w9500", Tahoma;
+      font-weight: 700;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      user-select: none;
+    }
+    .mine-cell.revealed {
+      border: 1px solid #999;
+      background: var(--panel);
+      cursor: default;
+    }
+    .mine-cell.flagged {
+      /* MODIFIED: Replaced text emoji with background image */
+      background-image: url('images/mine_flag.png');
+      background-size: 18px 18px; /* Slightly smaller than cell */
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    .mine-cell.mine {
+      /* MODIFIED: Replaced text emoji with background image */
+      background-color: #ff4136; /* Red for revealed mine */
+      background-image: url('images/mine.png');
+      background-size: 18px 18px; /* Slightly smaller than cell */
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    .mine-cell.wrong-flag {
+      background: #ffb3b3; /* Light red for wrong flag */
+    }
+    /* Number colors */
+    .mine-cell[data-count="1"] { color: #0000FF; }
+    .mine-cell[data-count="2"] { color: #008000; }
+    .mine-cell[data-count="3"] { color: #FF0000; }
+    .mine-cell[data-count="4"] { color: #000080; }
+    .mine-cell[data-count="5"] { color: #800000; }
+    .mine-cell[data-count="6"] { color: #008080; }
+    .mine-cell[data-count="7"] { color: #000000; }
+    .mine-cell[data-count="8"] { color: #808080; }  
+  
+    #clippy-container {
+      position: fixed;
+      bottom: 50px; /* Just above the taskbar */
+      right: 20px;
+      z-index: 9998; /* High z-index, but below overlays */
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      
+      /* Animation: Start off-screen */
+      opacity: 0;
+      transform: translateY(200px);
+      transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.5s;
+    }
+    #clippy-container.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #clippy-img {
+      width: 90px;
+      height: auto;
+      cursor: pointer;
+      /* margin-left: -20px; Overlap the bubble slightly */
+    }
+
+    #clippy-bubble {
+      width: 220px;
+      background: #FFFFE1; /* Classic yellow */
+      border: 1px solid #000;
+      padding: 12px;
+      border-radius: 6px;
+      box-shadow: 4px 4px 0 #404040; /* shadow */
+      margin-bottom: 5px; /* Position above clippy */
+      position: relative;
+      color: #000;
+      font-family: 'ari-w9500', Tahoma, sans-serif;
+      font-size: 14px;
+      line-height: 1.3;
+    }
+
+    /* The little triangle tail for the bubble */
+    #clippy-bubble::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-top: 10px solid #FFFFE1; /* Matches bubble bg */
+      bottom: -10px;
+      right: 35px;
+    }
+    
+    /* Bubble's close button */
+    #clippy-close {
+      position: absolute;
+      top: 2px;
+      right: 4px;
+      background: none;
+      border: none;
+      font-size: 20px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #000;
+      padding: 0;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div id="boot" class="overlay">
+    <div class="boot-logo">
+      <div style="font-size:20px;font-weight:800">Windows 98  — S. Thompson</div>
+      <div style="margin-top:8px" class="small muted">Loading desktop...</div>
+    </div>
+  </div>
+
+  <div class="desktop" id="desktop">
+    
+    <div class="icon-column">
+      <div class="icon" title="My Computer" onclick="openWin('comp',this)">
+        <img src="icons/w98_computer.ico" alt="My Computer">
+        <span>My Computer</span>
+      </div>
+      <div class="icon" title="Projects" onclick="openWin('projects',this)">
+        <img src="icons/projects_icon.ico" alt="Projects">
+        <span>Projects</span>
+      </div>
+      <div class="icon" title="Skills" onclick="openWin('skills',this)">
+        <img src="icons/w98_tools_gear.ico" alt="Skills">
+        <span>Skills</span>
+      </div>
+      <div class="icon" title="Resume" onclick="openWin('resume',this)">
+        <img src="icons/resume_icon.ico" alt="Resume">
+        <span>Resume</span>
+      </div>
+      <div class="icon" title="About" onclick="openWin('about',this)">
+        <img src="icons/about_me_icon.ico" alt="About Me">
+        <span>About Me</span>
+      </div>
+      <div class="icon" title="Recycle Bin" onclick="openWin('recycle',this)">
+        <img src="icons/w98_recycle_bin_full.ico" alt="Recycle Bin">
+        <span>Recycle Bin</span>
+      </div>
+    </div>
+
+    <div class="icon-column">
+      <div class="icon" title="GitHub" onclick="openWin('github', this)">
+        <img src="images/pixel-github.png" alt="GitHub">
+        <span>GitHub</span>
+      </div>
+
+      <div class="icon" title="LinkedIn" onclick="openWin('linkedin', this)">
+        <img src="images/pixel-linkedin.png" alt="LinkedIn">
+        <span>LinkedIn</span>
+      </div>
+
+      <div class="icon" title="Minesweeper" onclick="openWin('minesweeper', this)">
+        <img src="icons/w98_game_mine_2.ico" alt="Minesweeper">
+        <span>Minesweeper</span>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div id="win-projects" class="win" style="display:none;left:120px;top:80px">
+    <div class="title">
+      <div class="left"><strong>Projects</strong></div>
+      <div class="ctrls"><button onclick="closeWin('projects')">&times;</button></div>
+    </div> <div class="content">
+      <div class="explorer">
+        <div class="folders">
+          <div class="folder" onclick="selectProj('healthAI')">HAPPI (AI Health)</div>
+          <div class="folder" onclick="selectProj('intelliConverse')">IntelliConverse (AI Access.)</div>
+          <div class="folder" onclick="selectProj('pistachioML')">Pistachio ML</div>
+          <div class="folder" onclick="selectProj('urbanForestry')">Edible Trees Database</div>
+          <div class="folder" onclick="selectProj('agentModel')">Agent-Based Model</div>
+          <div class="folder" onclick="selectProj('olympicViz')">Olympic Data Viz</div>
+        </div>        
+      </div>
+        <div class="preview" id="projPreview">
+          <div class="proj-card"><b>Select a project</b><p class="muted">Click a project on the left to see details, tech stack and a demo link.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="win-skills" class="win" style="display:none;left:160px;top:120px;width:520px;">
+    <div class="title">
+      <div class="left"><strong>Skills</strong></div>
+      <div class="ctrls"><button onclick="closeWin('skills')">&times;</button></div>
+    </div>
+    <div class="content">
+      <div class="skills-container">
+        <div class="skills-group">
+          <h4>Languages</h4>
+          <ul>
+            <li>Python</li>
+            <li>JavaScript</li>
+            <li>SQL</li>
+            <li>Java</li>
+            <li>R</li>
+            <li>C++</li>
+          </ul>
+        </div>
+        <div class="skills-group">
+          <h4>Data Science & ML</h4>
+          <ul>
+            <li>Machine Learning</li>
+            <li>AI (Gemini API)</li>
+            <li>Data Visualization</li>
+            <li>Predictive Modeling</li>
+            <li>Statistics</li>
+            <li>(YOLO, CVAT)</li>
+          </ul>
+        </div>
+        <div class="skills-group">
+          <h4>Tools & Concepts</h4>
+          <ul>
+            <li>Git & GitHub</li>
+            <li>Figma</li>
+            <li>React</li>
+            <li>Streamlit</li>
+            <li>MongoDB</li>
+            <li>PostgreSQL</li>
+            <li>HCI</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="win-github" class="win" style="display:none;left:300px;top:200px;width:340px;">
+    <div class="title">
+      <div class="left"><strong>Confirm Navigation</strong></div>
+      <div class="ctrls"><button onclick="closeWin('github')">&times;</button></div>
+    </div>
+    <div class="content" style="text-align: center;">
+      <p style="margin-top: 10px;">Do you want to navigate to the external site:</p>
+      <p><strong>https://github.com/smthom1</strong></p>
+
+      <div style="margin-top: 20px; margin-bottom: 10px; display: flex; justify-content: center; gap: 8px;">
+        
+        <button class="start" onclick="goToGithub()">
+          Yes
+        </button>
+        <button class="start" onclick="closeWin('github')">
+          No
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="win-linkedin" class="win" style="display:none;left:320px;top:220px;width:340px;">
+    <div class="title">
+      <div class="left"><strong>Confirm Navigation</strong></div>
+      <div class="ctrls"><button onclick="closeWin('linkedin')">&times;</button></div>
+    </div>
+    <div class="content" style="text-align: center;">
+      <p style="margin-top: 10px;">Do you want to navigate to the external site:</p>
+      <p><strong>https://www.linkedin.com/in/sm-thompson/</strong></p>
+      <div style="margin-top: 20px; margin-bottom: 10px; display: flex; justify-content: center; gap: 8px;">
+        
+        <button class="start" onclick="goToLinkedIn()">
+          Yes
+        </button>
+        <button class="start" onclick="closeWin('linkedin')">
+          No
+        </button>
+        
+      </div>
+    </div>
+  </div>
+
+  <div id="win-resume" class="win" style="display:none;left:200px;top:160px;width:640px;height:520px">
+    <div class="title"><div class="left"><strong>Resume.pdf</strong></div><div class="ctrls"><button onclick="closeWin('resume')">&times;</button></div>
+    </div><div class="content">
+      <iframe src="public_resume.pdf" width="100%" height="420"></iframe>
+    </div>
+  </div>
+
+  <div id="win-about" class="win" style="display:none;left:240px;top:140px;width:420px;height:300px">
+    <div class="title"><div class="left"><strong>About.txt</strong></div><div class="ctrls"><button onclick="closeWin('about')">&times;</button></div>
+    </div><div class="content">
+      <p><b>Hi — I’m Sophia Thompson.</b></p>
+      <p>I'm a Master of Data Science student at UC Irvine, passionate about applying computational tools to environmental, social, and healthcare challenges.</p>
+      <p>I bridge technical innovation with a human-centered understanding to build impactful, data-driven solutions.</p>
+      <p class="muted small" style="margin-top: 12px;">Interests: Machine Learning, AI, Data Visualization, Human-Computer Interaction (HCI), and Sustainable Systems.</p>
+    </div>
+  </div>
+
+  <div id="win-comp" class="win" style="display:none;left:280px;top:100px;width:420px;height:300px">
+    <div class="title"><div class="left"><strong>My Computer</strong></div><div class="ctrls"><button onclick="closeWin('comp')">&times;</button></div>
+    </div><div class="content small">
+      <div><b>Drives</b></div>
+      <ul>
+        <li>C:\ (System)</li>
+        <li>D:\ (Data)</li>
+        <li>A:\ (Floppy) <span class="muted">(virtual)</span></li>
+      </ul>
+      <div style="height:8px"></div>
+      <div><b>System Info</b></div>
+      <div class="muted">S. Thompson — Windows 98 (browser edition)</div>
+    </div>
+  </div>
+
+  <div id="win-recycle" class="win" style="display:none;left:320px;top:160px;width:320px;height:220px">
+    <div class="title"><div class="left"><strong>Recycle Bin</strong></div><div class="ctrls"><button onclick="closeWin('recycle')">&times;</button></div>
+    </div><div class="content">
+      <div id="recycleContent" class="muted">The Recycle Bin is empty.</div>
+      <div style="height:12px"></div>
+      <button onclick="simulateDelete()">Simulate Delete File</button>
+      <button onclick="emptyRecycle()">Empty Recycle Bin</button>
+    </div>
+  </div>
+
+  <div id="win-notepad" class="win" style="display:none;left:360px;top:200px;width:520px;height:380px">
+    <div class="title"><div class="left"><strong>Notepad</strong></div><div class="ctrls"><button onclick="closeWin('notepad')">&times;</button></div>
+    </div><div class="content">
+      <textarea class="notepad-text" id="notepadContent">Welcome to my notepad. Jot notes here.</textarea>
+      <div style="margin-top:10px"><button onclick="downloadText()">Save As .txt</button></div>
+    </div>
+  </div>
+
+  <div id="win-minesweeper" class="win" style="display:none;left:200px;top:150px;width:auto; resize: none; overflow: hidden;">
+    <div class="title">
+      <div class="left"><strong>Minesweeper</strong></div>
+      <div class="ctrls"><button onclick="closeWin('minesweeper')">&times;</button></div>
+    </div>
+    <div class="content" style="background: var(--win-bg); padding: 8px;">
+      <div class="mine-ui-bar">
+        <div class="mine-counter" id="mineFlags">010</div>
+        <div class="mine-reset" id="mineReset"></div>
+        <div class="mine-counter" id="mineTimer">000</div>
+      </div>
+      <div id="mineGrid" class="mine-grid">
+        </div>
+    </div>
+  </div>
+
+  <div id="startMenu" class="start-menu">
+    <h4>Start</h4>
+
+    <div class="start-item" onclick="openWin('projects',this)">
+      <img src="icons/projects_icon.ico" alt="Projects">
+      <span><u>P</u>rojects</span>
+    </div>
+    <div class="start-item" onclick="openWin('skills',this)">
+      <img src="icons/w98_tools_gear.ico" alt="Skills">
+      <span><u>S</u>kills</span>
+    </div>
+    <div class="start-item" onclick="openWin('resume',this)">
+      <img src="icons/resume_icon.ico" alt="Resume">
+      <span><u>R</u>esume</span>
+    </div>
+
+    <div class="group">
+      <div class="start-item" onclick="openWin('minesweeper',this)">
+        <img src="icons/w98_game_mine_2.ico" alt="Minesweeper">
+        <span><u>M</u>inesweeper</span>
+      </div>
+      <div class="start-item" onclick="openWin('notepad',this)">
+        <img src="icons/w98_notepad.ico" alt="Notepad">
+        <span><u>N</u>otepad</span>
+      </div>
+      <div class="start-item" onclick="openWin('about',this)">
+        <img src="icons/about_me_icon.ico" alt="About Me">
+        <span><u>A</u>bout Me</span>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="start-item" onclick="shutdown()">
+        <img src="icons/w98_shut_down_normal.ico" alt="Shut Down...">
+        <span>S<u>h</u>ut Down...</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="taskbar">
+    <div class="start" id="startBtn">
+      <div class="logo"><img src="icons/w98_windows.ico" alt="Start"></div>
+      <div>Start</div>
+    </div>
+    <div class="task-items" id="taskItems"></div>
+    <div class="tb-clock" id="clock">--:--</div>
+  </div>
+
+  <div id="shutdownOverlay" class="overlay" style="display:none;z-index:10000;">
+    <div style="text-align:center">
+      <div style="font-size:22px;font-weight:700">It is now safe to turn off your computer.</div>
+      <div style="margin-top:12px;" class="small muted">(This is a playful simulation — click anywhere to restart.)</div>
+    </div>
+  </div>
+
+  <div id="clippy-container">
+    <div id="clippy-bubble">
+      <button id="clippy-close">&times;</button>
+      <p>It looks like you're visiting Sophia Thompson's portfolio!</p>
+      <p class="small muted">Try clicking the desktop icons or the Start menu to explore.</p>
+    </div>
+    <img src="images/Clippy_final.png" alt="Clippy" id="clippy-img">
+  </div>
+  
+  <audio id="bootSound"></audio>
+
+  <script>
+    // --- Boot sequence ---
+    const bootEl = document.getElementById('boot');
+    function playBootTone(){
+      // small pleasant chime via WebAudio
+      try{
+        const ctx = new (window.AudioContext||window.webkitAudioContext)();
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type='sine';o.frequency.setValueAtTime(440,ctx.currentTime);
+        g.gain.setValueAtTime(0,ctx.currentTime);
+        g.gain.linearRampToValueAtTime(0.12,ctx.currentTime+0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001,ctx.currentTime+0.9);
+        o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime+0.9);
+      }catch(e){/* ignore */}
+    }
+    playBootTone();
+    setTimeout(()=>{bootEl.style.transition='opacity .6s';bootEl.style.opacity=0;setTimeout(()=>bootEl.remove(),700)},1400);
+
+    // --- Utility: window management ---
+    const mapping = {
+      projects:'win-projects',
+      skills:'win-skills',
+      resume:'win-resume',
+      about:'win-about',
+      comp:'win-comp',
+      recycle:'win-recycle',
+      notepad:'win-notepad',
+      github:'win-github',
+      linkedin:'win-linkedin',
+      minesweeper: 'win-minesweeper' // MINESWEEPER MAPPING
+    };
+
+    // --- Utility: Bring window to front on click ---
+    function makeFocusable(winEl) {
+      winEl.addEventListener('mousedown', () => {
+        winEl.style.zIndex = Date.now();
+      });
+    }
+
+    // NEW openWin function
+    function openWin(name, sourceElement){
+      const id = mapping[name];
+      const el = document.getElementById(id);
+      if(!el) return;
+
+      // If already open, just focus
+      if (el.style.display === 'block') {
+        el.style.zIndex = Date.now();
+        return;
+      }
+
+      // 1. Get Source Rect (fallback to center screen)
+      let sourceRect;
+      if (sourceElement) {
+        sourceRect = sourceElement.getBoundingClientRect();
+      } else {
+        // Fallback for F1 key or other non-element triggers
+        sourceRect = { 
+          top: window.innerHeight / 2, 
+          left: window.innerWidth / 2, 
+          width: 0, 
+          height: 0 
+        };
+      }
+
+      // 2. Measure Target Rect (must be visible to measure)
+      el.style.visibility = 'hidden';
+      el.style.display = 'block';
+      const targetRect = el.getBoundingClientRect();
+      el.style.display = 'none';
+      el.style.visibility = 'visible';
+
+      // 3. Calculate Transform Origin
+      // This finds the icon's center relative to the window's top-left corner
+      const sourceCenterX = sourceRect.left + sourceRect.width / 2;
+      const sourceCenterY = sourceRect.top + sourceRect.height / 2;
+      const originX = sourceCenterX - targetRect.left;
+      const originY = sourceCenterY - targetRect.top;
+      
+      el.style.transformOrigin = `${originX}px ${originY}px`;
+      
+      // 4. Set animation start state
+      el.style.transform = 'scale(0.1)';
+      el.style.opacity = '0';
+      el.style.transition = 'transform 0.15s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.15s ease-out';
+      
+      // 5. Show element
+      el.style.display = 'block';
+      el.style.zIndex = Date.now();
+      
+      // 6. Trigger animation (in the next frame)
+      requestAnimationFrame(() => {
+        el.style.transform = 'scale(1)';
+        el.style.opacity = '1';
+      });
+
+      // 7. Cleanup transition
+      el.addEventListener('transitionend', () => {
+        el.style.transition = ''; // Clear transition so resize/drag is smooth
+      }, { once: true });
+      
+      // 8. Add taskbar item
+      addTask(name);
+    }
+
+    // closeWin function
+    function closeWin(name){
+      const id = mapping[name];
+      const el = document.getElementById(id);
+      if(!el) return;
+      
+      // Set transition for closing
+      // It will use the transformOrigin set during open() or minimizeToggle()
+      el.style.transition = 'transform 0.1s ease-in, opacity 0.1s ease-in';
+      
+      // Animate out
+      el.style.transform = 'scale(0.1)';
+      el.style.opacity = '0';
+      
+      // After animation, hide and reset
+      setTimeout(() => {
+        el.style.display = 'none';
+        // Reset for next open
+        el.style.transform = 'scale(1)'; 
+        el.style.opacity = '1';
+        el.style.transition = ''; // Clear transition
+      }, 100); // Must match animation duration
+      
+      removeTask(name);
+    }
+
+    // draggable title bars
+    function makeDraggable(winEl){
+      const title = winEl.querySelector('.title');
+      title.addEventListener('mousedown',function(e){
+        winEl.style.zIndex = Date.now();
+        const rect = winEl.getBoundingClientRect();
+        const offsetX = e.clientX - rect.left;
+        const offsetY = e.clientY - rect.top;
+        function onMove(ev){winEl.style.left=(ev.clientX-offsetX)+'px';winEl.style.top=(ev.clientY-offsetY)+'px';}
+        function done(){document.removeEventListener('mousemove',onMove);document.removeEventListener('mouseup',done)}
+        document.addEventListener('mousemove',onMove);document.addEventListener('mouseup',done);
+      });
+    }
+    document.querySelectorAll('.win').forEach(winEl => {
+      makeDraggable(winEl);
+      makeFocusable(winEl);
+    });
+
+    // --- Start menu toggle ---
+    const startBtn = document.getElementById('startBtn');
+    const startMenu = document.getElementById('startMenu');
+    startBtn.addEventListener('click',()=>{startMenu.style.display = startMenu.style.display === 'block' ? 'none' : 'block';});
+    document.addEventListener('click', (e)=>{ if(!startMenu.contains(e.target) && !startBtn.contains(e.target)) startMenu.style.display='none';});
+
+    // --- Clock ---
+    function updateClock(){
+      const now = new Date();
+      const hh = String(now.getHours()).padStart(2,'0');
+      const mm = String(now.getMinutes()).padStart(2,'0');
+      document.getElementById('clock').textContent = hh+':'+mm;
+    }
+    setInterval(updateClock,1000); updateClock();
+
+    // --- Taskbar items ---
+
+    // Map window names to their icon files
+    const taskbarIconMapping = {
+      projects: 'icons/projects_icon.ico',
+      skills: 'icons/w98_tools_gear.ico',
+      resume: 'icons/resume_icon.ico',
+      about: 'icons/about_me_icon.ico',
+      comp: 'icons/w98_computer.ico',
+      recycle: 'icons/w98_recycle_bin_full.ico',
+      notepad: 'icons/w98_notepad.ico',
+      github: 'images/pixel-github.png',
+      linkedin: 'images/pixel-linkedin.png',
+      minesweeper: 'icons/w98_game_mine_2.ico'
+    };
+
+    function addTask(name){
+      const list = document.getElementById('taskItems');
+      if(document.getElementById('task-'+name)) return; // already present
+
+      const el = document.createElement('div');
+      el.className = 'start'; // Re-use the .start style
+      el.id = 'task-' + name;
+      el.style.marginRight = '6px';
+      el.style.padding = '4px 8px';
+      el.onclick = ()=>{minimizeToggle(name)};
+
+      // Create icon
+      const iconSrc = taskbarIconMapping[name];
+      let iconHtml = '';
+      if (iconSrc) {
+        if (iconSrc.endsWith('.ico') || iconSrc.endsWith('.png')) {
+          // It's an image
+          iconHtml = `<img src="${iconSrc}" alt="${name}" style="width:16px; height:16px; margin-right: 6px; vertical-align: middle;">`;
+        } else {
+          // It's an emoji
+          iconHtml = `<span style="font-size: 16px; margin-right: 6px; vertical-align: middle;">${iconSrc}</span>`;
+        }
+      }
+      
+      el.innerHTML = iconHtml + name; // Set content
+      list.appendChild(el);
+    }
+
+    function removeTask(name){ const el=document.getElementById('task-'+name); if(el) el.remove(); }
+
+    // NEW: Replaces toggleFocus with an animating minimize/restore
+    function minimizeToggle(name) {
+      const winEl = document.getElementById(mapping[name]);
+      const taskEl = document.getElementById('task-' + name);
+      if (!winEl || !taskEl) return;
+
+      // 1. Get Rects
+      const winRect = winEl.getBoundingClientRect();
+      const taskRect = taskEl.getBoundingClientRect();
+
+      // 2. Calculate Transform Origin (taskbar item's center relative to window)
+      const taskCenterX = taskRect.left + taskRect.width / 2;
+      const taskCenterY = taskRect.top + taskRect.height / 2;
+      
+      const originX = taskCenterX - winRect.left;
+      const originY = taskCenterY - winRect.top;
+      
+      // Store the original transform-origin from openWin (the icon position)
+      if (!winEl.dataset.originalOrigin) {
+          winEl.dataset.originalOrigin = winEl.style.transformOrigin;
+      }
+      
+      // Set new origin to the taskbar item
+      winEl.style.transformOrigin = `${originX}px ${originY}px`;
+
+      if (winEl.style.display === 'none') {
+        // --- RESTORE (Expand) ---
+        // It's hidden, so restore it from the taskbar item
+        
+        // 1. Set animation start state
+        winEl.style.transform = 'scale(0.1)';
+        winEl.style.opacity = '0';
+        winEl.style.transition = 'transform 0.15s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.15s ease-out';
+        
+        // 2. Show element
+        winEl.style.display = 'block';
+        winEl.style.zIndex = Date.now();
+        
+        // 3. Trigger animation
+        requestAnimationFrame(() => {
+          winEl.style.transform = 'scale(1)';
+          winEl.style.opacity = '1';
+        });
+
+        // 4. Cleanup
+        winEl.addEventListener('transitionend', () => {
+          winEl.style.transition = ''; 
+          // Restore the icon's origin, so the 'X' button animates correctly
+          winEl.style.transformOrigin = winEl.dataset.originalOrigin || 'center'; 
+        }, { once: true });
+
+      } else {
+        // --- MINIMIZE (Retract) ---
+        // It's visible, so minimize it to the taskbar item
+        
+        // 1. Set transition
+        winEl.style.transition = 'transform 0.1s ease-in, opacity 0.1s ease-in';
+        
+        // 2. Animate out
+        winEl.style.transform = 'scale(0.1)';
+        winEl.style.opacity = '0';
+        
+        // 3. After animation, hide
+        setTimeout(() => {
+          winEl.style.display = 'none';
+        }, 100); // Must match animation duration
+      }
+    }
+
+    // --- ADDED MINESWEEPER GAME LOGIC ---
+    (function() {
+      const ROWS = 9;
+      const COLS = 9;
+      const MINES = 10;
+
+      let board = [];
+      let mineLocations = [];
+      let flags = 0;
+      let cellsRevealed = 0;
+      let timer = 0;
+      let timerInterval = null;
+      let gameOver = false;
+      let firstClick = true;
+
+      const gridEl = document.getElementById('mineGrid');
+      const flagsEl = document.getElementById('mineFlags');
+      const timerEl = document.getElementById('mineTimer');
+      const resetEl = document.getElementById('mineReset');
+
+      function initMinesweeper() {
+        // Set CSS variables for grid size
+        gridEl.style.setProperty('--mine-cols', COLS);
+        gridEl.style.setProperty('--mine-rows', ROWS);
+        
+        resetEl.addEventListener('click', startGame);
+        
+        // Stop right-click context menu on the grid
+        gridEl.addEventListener('contextmenu', e => e.preventDefault()); 
+
+        startGame();
+      }
+
+      function startGame() {
+        // Reset state
+        board = [];
+        mineLocations = [];
+        flags = 0;
+        cellsRevealed = 0;
+        timer = 0;
+        gameOver = true; // Set to true to stop clicks until board is ready
+        firstClick = true;
+        
+        // Reset UI
+        gridEl.innerHTML = '';
+        // MODIFIED: Remove 'win'/'lost' classes instead of setting text
+        resetEl.classList.remove('gamewon', 'lost');
+        updateFlagCount();
+        
+        // Stop and reset timer
+        if (timerInterval) clearInterval(timerInterval);
+        timerEl.textContent = '000';
+
+        // Create board data
+        for (let r = 0; r < ROWS; r++) {
+          const row = [];
+          for (let c = 0; c < COLS; c++) {
+            row.push({
+              r,
+              c,
+              isMine: false,
+              isRevealed: false,
+              isFlagged: false,
+              neighborCount: 0,
+              el: null
+            });
+          }
+          board.push(row);
+        }
+
+        // Create DOM elements
+        for (let r = 0; r < ROWS; r++) {
+          for (let c = 0; c < COLS; c++) {
+            const cell = board[r][c];
+            const cellEl = document.createElement('div');
+            cellEl.className = 'mine-cell';
+            cellEl.dataset.r = r;
+            cellEl.dataset.c = c;
+            
+            // Left Click
+            cellEl.addEventListener('click', () => onCellClick(cell));
+            // Right Click (Flag)
+            cellEl.addEventListener('contextmenu', (e) => {
+              e.preventDefault();
+              onCellFlag(cell);
+            });
+
+            cell.el = cellEl;
+            gridEl.appendChild(cellEl);
+          }
+        }
+        
+        gameOver = false; // Game is ready
+      }
+
+      function placeMines(firstClickCell) {
+        let minesPlaced = 0;
+        while (minesPlaced < MINES) {
+          const r = Math.floor(Math.random() * ROWS);
+          const c = Math.floor(Math.random() * COLS);
+          
+          // Don't place on first click cell or if already a mine
+          if (board[r][c] !== firstClickCell && !board[r][c].isMine) {
+            board[r][c].isMine = true;
+            mineLocations.push(board[r][c]);
+            minesPlaced++;
+          }
+        }
+
+        // Calculate neighbor counts
+        for (let r = 0; r < ROWS; r++) {
+          for (let c = 0; c < COLS; c++) {
+            if (board[r][c].isMine) continue;
+            board[r][c].neighborCount = getNeighbors(board[r][c]).filter(n => n.isMine).length;
+          }
+        }
+      }
+      
+      function startTimer() {
+        if (timerInterval) clearInterval(timerInterval);
+        timer = 0;
+        timerInterval = setInterval(() => {
+          timer++;
+          timerEl.textContent = String(timer).padStart(3, '0');
+          if(timer > 999) timer = 999;
+        }, 1000);
+      }
+
+      function onCellClick(cell) {
+        if (gameOver || cell.isRevealed || cell.isFlagged) return;
+
+        if (firstClick) {
+          placeMines(cell); // Place mines *after* first click
+          startTimer();
+          firstClick = false;
+        }
+
+        if (cell.isMine) {
+          endGame(false); // Lost
+          return;
+        }
+
+        revealCell(cell);
+        
+        if (cell.neighborCount === 0) {
+          revealEmptyNeighbors(cell);
+        }
+
+        checkWin();
+      }
+
+      function onCellFlag(cell) {
+        if (gameOver || cell.isRevealed) return;
+
+        cell.isFlagged = !cell.isFlagged;
+        // MODIFIED: Removed textContent set, CSS class handles the image
+        cell.el.textContent = ''; 
+        cell.el.classList.toggle('flagged', cell.isFlagged);
+        
+        flags += cell.isFlagged ? 1 : -1;
+        updateFlagCount();
+
+        checkWin();
+      }
+
+      function revealCell(cell) {
+        if (cell.isRevealed) return;
+        
+        cell.isRevealed = true;
+        cell.el.classList.add('revealed');
+        cellsRevealed++;
+
+        if (cell.isMine) {
+          // MODIFIED: Removed textContent set, CSS class handles the image
+          cell.el.textContent = '';
+          cell.el.classList.add('mine');
+        } else if (cell.neighborCount > 0) {
+          cell.el.textContent = cell.neighborCount;
+          cell.el.dataset.count = cell.neighborCount;
+        }
+      }
+
+      function revealEmptyNeighbors(cell) {
+        const neighbors = getNeighbors(cell);
+        for (const neighbor of neighbors) {
+          if (!neighbor.isRevealed && !neighbor.isFlagged) {
+            revealCell(neighbor);
+            if (neighbor.neighborCount === 0) {
+              revealEmptyNeighbors(neighbor); // Recursive reveal
+            }
+          }
+        }
+      }
+      
+      function getNeighbors(cell) {
+        const neighbors = [];
+        for (let dr = -1; dr <= 1; dr++) {
+          for (let dc = -1; dc <= 1; dc++) {
+            if (dr === 0 && dc === 0) continue;
+            const nr = cell.r + dr;
+            const nc = cell.c + dc;
+            if (nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS) {
+              neighbors.push(board[nr][nc]);
+            }
+          }
+        }
+        return neighbors;
+      }
+
+      function updateFlagCount() {
+        const flagsLeft = MINES - flags;
+        flagsEl.textContent = String(flagsLeft).padStart(3, '0');
+      }
+      
+      function checkWin() {
+        const totalNonMines = ROWS * COLS - MINES;
+        if (cellsRevealed === totalNonMines) {
+          endGame(true); // Won
+        }
+      }
+
+      function endGame(isWin) {
+        gameOver = true;
+        if (timerInterval) clearInterval(timerInterval);
+        
+        if (isWin) {
+          // MODIFIED: Add 'win' class for cool face
+          resetEl.classList.add('gamewon');
+          // Auto-flag remaining mines
+          for(const mine of mineLocations) {
+            if(!mine.isFlagged) {
+              mine.isFlagged = true;
+              // MODIFIED: Removed textContent set
+              mine.el.textContent = ''; 
+              mine.el.classList.add('flagged');
+            }
+          }
+          flags = MINES;
+          updateFlagCount();
+          
+        } else {
+          // MODIFIED: Add 'lost' class for dead face
+          resetEl.classList.add('lost');
+          // Reveal all mines
+          for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c < COLS; c++) {
+              const cell = board[r][c];
+              if (cell.isMine && !cell.isRevealed) {
+                revealCell(cell);
+              }
+              // Show wrong flags (Kept '❌' as no image was specified)
+              if (!cell.isMine && cell.isFlagged) {
+                cell.el.textContent = '❌';
+                cell.el.classList.add('wrong-flag');
+              }
+            }
+          }
+        }
+      }
+
+      // Initialize the game
+      initMinesweeper();
+    })();
+    
+    (function() {
+      const clippyContainer = document.getElementById('clippy-container');
+      const clippyBubble = document.getElementById('clippy-bubble');
+      const clippyClose = document.getElementById('clippy-close');
+      const clippyImg = document.getElementById('clippy-img');
+
+      if (!clippyContainer || !clippyBubble || !clippyClose || !clippyImg) return;
+
+      // 1. Show Clippy after boot sequence
+      setTimeout(() => {
+        clippyContainer.classList.add('show');
+      }, 2000); // 2 seconds after page load
+
+      // 2. Close button hides the bubble
+      clippyClose.addEventListener('click', () => {
+        clippyBubble.style.display = 'none';
+      });
+
+      // 3. Clicking Clippy toggles the bubble
+      clippyImg.addEventListener('click', () => {
+        clippyBubble.style.display = clippyBubble.style.display === 'none' ? 'block' : 'none';
+      });
+
+    })();
+
+    const projectsData = {
+      healthAI:{
+        title:'Health & Accessibility AI (HackDavis, Best Medical Hack Winner)',
+        desc:'Developed HAPPI, a digital platform for Alzheimer\'s/dementia patients using digitized SAGE exams. Won "Best Medical Hack" at HackDavis 2025.',
+        stack:['Streamlit', 'Gemini API', 'MongoDB', 'Firebase'],
+        link:'https://github.com/smthom1/alz-data'
+      },
+      intelliConverse:{
+        title:'IntelliConverse (HackDavis, Best MongoDB Winner)',
+        desc:'Accessibility-focused web app for individuals with learning differences, using voice/text comprehension.',
+        stack:['React', 'Next.js', 'Azure Speech', 'Milvus', 'MongoDB'],
+        link:'https://github.com/IdkwhatImD0ing/study-assistant' 
+      },
+      pistachioML:{
+        title:'Pistachio Image Recognition',
+        desc:'Built Python-based ML models (YOLO, CVAT) for automated pistachio classification and sorting. Reduced sorting errors and material waste.',
+        stack:['Python', 'Machine Learning', 'YOLO'],
+        link:'https://github.com/smthom1/Pistachio-Split-Recognition'
+      },
+      urbanForestry:{
+        title:'Edible Trees Database',
+        desc:'Designed a scalable PostgreSQL/PostGIS database to catalog edible urban tree species, enhancing public access to agroforestry data.',
+        stack:['PostgreSQL', 'PostGIS', 'Java', 'Leaflet']
+      },
+      agentModel:{
+        title:'Agent-Based Model of Infection Dynamics',
+        desc:'Developed a Java-based simulation (MASONplus9) to model SIR infectious disease dynamics with an interactive GUI.',
+        stack:['Java', 'MASONplus9', 'SIR Modeling']
+      },
+      olympicViz:{
+        title:'Interactive Olympic Data Visualization',
+        desc:'Built an interactive D3.js dashboard to explore correlations between Olympic medal counts, GDP, population, and host status using linked scatter plots and a heatmap.',
+        stack:['D3.js', 'JavaScript', 'HTML', 'CSS'],
+        link:'https://github.com/cassiehopkin/ECS163-FinalProject'
+      }
+    };
+    function selectProj(key){ 
+      const p = projectsData[key]; 
+      const preview = document.getElementById('projPreview');
+      
+      // Conditionally create the link HTML
+      const linkHtml = p.link 
+        ? `<p style="margin-top:8px"><a href="${p.link}" target="_blank">Repo</a></p>`
+        : ''; // It's an empty string if no link exists
+
+      // Build the final HTML
+      preview.innerHTML = `<div class="proj-card">
+                             <b>${p.title}</b>
+                             <p>${p.desc}</p>
+                             <p class="small muted">Tech: ${p.stack.join(', ')}</p>
+                             ${linkHtml}
+                           </div>`; 
+    }
+
+    // --- Recycle bin interactivity ---
+    let recycleList = [];
+    function simulateDelete(){ recycleList.push('<br>file-'+(Math.floor(Math.random()*900)+100)); updateRecycle(); }
+    function emptyRecycle(){ recycleList=[]; updateRecycle(); }
+    function updateRecycle(){ const el = document.getElementById('recycleContent'); if(recycleList.length===0) el.textContent='The Recycle Bin is empty.'; else el.innerHTML = `<div>${recycleList.length} item(s) — <span class="muted">${recycleList.join(', ')}</span></div>`; }
+
+    // --- Notepad save ---
+    function downloadText(){ const text = document.getElementById('notepadContent').value; const blob = new Blob([text],{type:'text/plain'}); const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='note.txt'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url); }
+
+    function goToGithub(){
+      window.open('https://github.com/smthom1', '_blank');
+      closeWin('github'); // Close the confirmation window
+    }
+
+    function goToLinkedIn(){
+      window.open('https://www.linkedin.com/in/sm-thompson/', '_blank');
+      closeWin('linkedin'); // Close the confirmation window
+    }
+
+    // --- Shutdown behavior ---
+    function shutdown(){ document.getElementById('shutdownOverlay').style.display='flex'; setTimeout(()=>{document.body.style.filter='grayscale(1)';},80); }
+    document.getElementById('shutdownOverlay').addEventListener('click',()=>{ location.reload(); });
+
+    // --- Accessibility: keyboard shortcuts ---
+    document.addEventListener('keydown',(e)=>{
+      const key = e.key.toLowerCase(); // Use lowercase for easier matching
+
+      if(key === 'escape'){ // close all
+        Object.keys(mapping).forEach(k=>closeWin(k));
+      }
+      if(key === 'f1'){ 
+        openWin('about'); 
+      }
+
+      // --- New Start Menu Logic ---
+      const startMenu = document.getElementById('startMenu');
+      if (startMenu.style.display === 'block') {
+        let handled = true; // Flag to close menu after action
+        
+        switch (key) {
+          case 'p':
+            openWin('projects');
+            break;
+          case 's':
+            openWin('skills');
+            break;
+          case 'r':
+            openWin('resume');
+            break;
+          // ADDED MINESWEEPER SHORTCUT
+          case 'm':
+            openWin('minesweeper');
+            break;
+          case 'n':
+            openWin('notepad');
+            break;
+          case 'a':
+            openWin('about');
+            break;
+          case 'h': // For "S(h)ut Down"
+            shutdown();
+            break;
+          default:
+            handled = false; // Don't close menu if key didn't match
+        }
+
+        if (handled) {
+          e.preventDefault(); // Stop the browser from default 'p' (print) etc.
+          startMenu.style.display = 'none'; // Close the menu
+        }
+      }
+    });
+
+    // initial tiny animation: drop a subtle shadow to make desktop feel alive
+    document.getElementById('desktop').style.opacity=0; setTimeout(()=>{document.getElementById('desktop').style.transition='opacity .6s';document.getElementById('desktop').style.opacity=1},600);
+  </script>
+</body>
+</html>
