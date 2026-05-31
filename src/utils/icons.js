@@ -16,6 +16,7 @@ export const getIcon = (id, theme) => {
     case 'linkedin': return 'images/pixel-linkedin.png' + v;
     case 'minesweeper': return `${folder}/${prefix}_game_mine_2.ico${v}`;
     case 'notepad': return `${folder}/${prefix}_notepad.ico${v}`;
+    case 'sticky': return `${folder}/${prefix}_notepad.ico${v}`;
     case 'shutdown': return `${folder}/${prefix}_shut_down_normal.ico${v}`;
     case 'start': return `${folder}/${prefix}_windows.ico${v}`;
     default: return '';

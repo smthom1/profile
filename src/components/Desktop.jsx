@@ -14,6 +14,7 @@ const rightIcons = [
   { id: 'github', label: 'GitHub' },
   { id: 'linkedin', label: 'LinkedIn' },
   { id: 'minesweeper', label: 'Minesweeper' },
+  { id: 'sticky', label: 'Sticky Notes' },
 ];
 
 function DesktopIcon({ icon, label, onClick, theme }) {

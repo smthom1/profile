@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import Desktop from './components/Desktop';
 import Taskbar from './components/Taskbar';
 import Window from './components/Window';
+import StickyNote from './components/StickyNote';
 
 import AboutContent from './components/windows/AboutContent';
 import ProjectsContent from './components/windows/ProjectsContent';
@@ -34,6 +35,7 @@ function App() {
   const [maximizedWindows, setMaximizedWindows] = useState({});
   const [zIndexCounter, setZIndexCounter] = useState(1);
   const [windowZIndices, setWindowZIndices] = useState({});
+  const [isStickyOpen, setIsStickyOpen] = useState(true);
 
   useEffect(() => {
     document.body.className = `theme-${theme}`;
@@ -43,6 +45,11 @@ function App() {
     // External links
     if(id === 'github') return window.open('https://github.com/smthom1', '_blank');
     if(id === 'linkedin') return window.open('https://www.linkedin.com/in/sm-thompson/', '_blank');
+    if(id === 'sticky') {
+      setIsStickyOpen(true);
+      focusWindow('sticky');
+      return;
+    }
 
     const winDef = initialWindows.find(w => w.id === id);
     if (!winDef) return;
@@ -141,6 +148,15 @@ function App() {
           {renderContent(win.id)}
         </Window>
       ))}
+
+      {isStickyOpen && (
+        <StickyNote
+          theme={theme}
+          onClose={() => setIsStickyOpen(false)}
+          zIndex={windowZIndices['sticky'] || 99}
+          onFocus={() => focusWindow('sticky')}
+        />
+      )}
 
       <Taskbar
         theme={theme}
