@@ -142,7 +142,7 @@ export default function StickyNote({ theme, onClose, zIndex = 999, onFocus }) {
         >
           {isWin11 ? (
             <svg width="8" height="8" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M1 1L9 9M9 1L1 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+              <path d="M1 1L9 9M9 1L1 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
             </svg>
           ) : (
             "x"
@@ -170,25 +170,24 @@ export default function StickyNote({ theme, onClose, zIndex = 999, onFocus }) {
         <div style={{ fontWeight: 'bold', fontSize: isWin11 ? 16 : 14, marginBottom: 2 }}>
           Updates coming soon!
         </div>
-        
+
         <div style={{ height: 1, background: isWin11 ? 'rgba(0,0,0,0.06)' : 'rgba(197, 176, 88, 0.4)', margin: '2px 0' }} />
 
         <div>
-          Stay tuned! I am currently working on rolling out major upgrades to this deluxe desktop portal:
+          Stay tuned! I am currently working on rolling out major upgrades to this website:
         </div>
 
         <ul style={{ margin: '4px 0', paddingLeft: 18, display: 'flex', flexDirection: 'column', gap: 3 }}>
-          <li>🚀 Faster loading speeds</li>
-          <li>🎨 Interactive themes & custom palettes</li>
-          <li>🕹️ More classic retro mini-games</li>
-          <li>📁 Expanded project write-ups</li>
+          <li>Interactive themes & custom palettes</li>
+          <li>More classic retro mini-games</li>
+          <li>Additional projects and write-ups</li>
         </ul>
 
-        <div style={{ 
-          marginTop: 8, 
-          textAlign: 'right', 
-          fontSize: isWin11 ? 12 : 11, 
-          fontStyle: 'italic', 
+        <div style={{
+          marginTop: 8,
+          textAlign: 'right',
+          fontSize: isWin11 ? 12 : 11,
+          fontStyle: 'italic',
           opacity: 0.8,
           fontWeight: isWin11 ? 600 : 'normal'
         }}>
